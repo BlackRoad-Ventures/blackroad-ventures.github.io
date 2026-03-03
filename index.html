@@ -315,6 +315,177 @@
       .stats { flex-direction: column; }
       .stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
     }
+
+    /* ── OLLAMA CHAT ──────────────────────────────────── */
+    .chat-section {
+      padding: 60px 2rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .chat-heading {
+      text-align: center;
+      margin-bottom: 8px;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .chat-subheading {
+      text-align: center;
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 24px;
+    }
+
+    .chat-config {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .chat-config label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      white-space: nowrap;
+    }
+
+    .chat-config input, .chat-config select {
+      background: var(--gray-800);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      color: var(--white);
+      padding: 6px 10px;
+      font-size: 13px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .chat-config input:focus, .chat-config select:focus {
+      outline: none;
+      border-color: #FFC10760;
+    }
+
+    .chat-window {
+      background: var(--gray-900);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 16px;
+      height: 360px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 12px;
+      scroll-behavior: smooth;
+    }
+
+    .chat-msg {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-width: 85%;
+    }
+
+    .chat-msg.user { align-self: flex-end; align-items: flex-end; }
+    .chat-msg.assistant { align-self: flex-start; align-items: flex-start; }
+
+    .chat-msg .bubble {
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .chat-msg.user .bubble {
+      background: #FFC10720;
+      border: 1px solid #FFC10740;
+      color: var(--white);
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-msg.assistant .bubble {
+      background: var(--gray-800);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.85);
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-msg .meta {
+      font-size: 11px;
+      color: rgba(255,255,255,0.25);
+    }
+
+    .chat-form {
+      display: flex;
+      gap: 8px;
+    }
+
+    .chat-input {
+      flex: 1;
+      background: var(--gray-800);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      color: var(--white);
+      padding: 10px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: none;
+      height: 44px;
+      transition: border-color 0.2s;
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: #FFC10760;
+    }
+
+    .chat-send {
+      background: #FFC107;
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      padding: 0 18px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      font-weight: 700;
+    }
+
+    .chat-send:hover { opacity: 0.85; }
+    .chat-send:active { transform: scale(0.96); }
+    .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .chat-status {
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      margin-top: 6px;
+      min-height: 16px;
+    }
+
+    .chat-status.error { color: #ff6b6b; }
+    .chat-status.ok { color: #4ade80; }
+
+    .mention-hint {
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    .mention-hint code {
+      color: #FFC107;
+      background: #FFC10715;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
   </style>
 </head>
 <body>
@@ -371,12 +542,224 @@
     </div>
   </div>
 
+  <!-- ── OLLAMA CHAT ────────────────────────────────────── -->
+  <section class="chat-section" id="ollama-chat">
+    <h2 class="chat-heading">🦙 Ollama Chat</h2>
+    <p class="chat-subheading">
+      Mention <strong style="color:#FFC107">@ollama</strong>, <strong style="color:#FFC107">@copilot</strong>,
+      <strong style="color:#FFC107">@lucidia</strong>, or <strong style="color:#FFC107">@blackboxprogramming</strong>
+      to send your message directly to your local Ollama server.
+    </p>
+
+    <div class="chat-config">
+      <label for="ollama-url">Ollama URL:</label>
+      <input type="text" id="ollama-url" value="http://localhost:11434" placeholder="http://localhost:11434" spellcheck="false">
+      <label for="ollama-model">Model:</label>
+      <input type="text" id="ollama-model" value="llama3" placeholder="llama3" spellcheck="false">
+    </div>
+
+    <div class="chat-window" id="chat-window" role="log" aria-live="polite" aria-label="Chat messages"></div>
+
+    <form class="chat-form" id="chat-form" autocomplete="off">
+      <textarea
+        class="chat-input"
+        id="chat-input"
+        placeholder="@ollama tell me about DeFi… (Enter to send, Shift+Enter for new line)"
+        rows="1"
+        aria-label="Chat input"
+      ></textarea>
+      <button type="submit" class="chat-send" id="chat-send" aria-label="Send message">➤</button>
+    </form>
+
+    <p class="chat-status" id="chat-status" role="status"></p>
+    <p class="mention-hint">
+      Use <code>@ollama</code>, <code>@copilot</code>, <code>@lucidia</code>, or <code>@blackboxprogramming</code>
+      — all routed to your local Ollama. No external services.
+    </p>
+  </section>
+
   <footer>
     <div class="footer-logo">
       <span>BlackRoad OS</span>, Inc.
     </div>
     <div class="footer-copy">© 2026 BlackRoad OS, Inc. All rights reserved. Proprietary — not open source.</div>
   </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // All these mentions are aliases for Ollama — no external service is used.
+      const OLLAMA_MENTIONS = ['@ollama', '@copilot', '@lucidia', '@blackboxprogramming'];
+
+      const form     = document.getElementById('chat-form');
+      const input    = document.getElementById('chat-input');
+      const window_  = document.getElementById('chat-window');
+      const status   = document.getElementById('chat-status');
+      const sendBtn  = document.getElementById('chat-send');
+      const urlInput = document.getElementById('ollama-url');
+      const modelInput = document.getElementById('ollama-model');
+
+      // Conversation history for multi-turn context
+      const history = [];
+
+      function setStatus(msg, cls) {
+        status.textContent = msg;
+        status.className = 'chat-status' + (cls ? ' ' + cls : '');
+      }
+
+      function addMessage(role, text) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'chat-msg ' + role;
+
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.textContent = text;
+
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        meta.textContent = role === 'user' ? 'You' : '🦙 Ollama';
+
+        wrapper.appendChild(meta);
+        wrapper.appendChild(bubble);
+        window_.appendChild(wrapper);
+        window_.scrollTop = window_.scrollHeight;
+        return bubble; // return so we can stream into it
+      }
+
+      function containsMention(text) {
+        const lower = text.toLowerCase();
+        return OLLAMA_MENTIONS.some(function (m) { return lower.includes(m); });
+      }
+
+      function stripMentions(text) {
+        let cleaned = text;
+        OLLAMA_MENTIONS.forEach(function (m) {
+          // Remove the mention (case-insensitive), preserve surrounding spaces
+          const re = new RegExp(m.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+          cleaned = cleaned.replace(re, '');
+        });
+        return cleaned.trim();
+      }
+
+      async function sendToOllama(userText) {
+        const baseUrl = (urlInput.value || 'http://localhost:11434').replace(/\/$/, '');
+        const model   = (modelInput.value || 'llama3').trim();
+        const endpoint = baseUrl + '/api/chat';
+
+        history.push({ role: 'user', content: userText });
+
+        const assistantBubble = addMessage('assistant', '');
+        setStatus('Connecting to Ollama…');
+
+        let response;
+        try {
+          response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: model,
+              messages: history,
+              stream: true
+            })
+          });
+        } catch (err) {
+          history.pop();
+          assistantBubble.textContent = '⚠️ Could not reach Ollama at ' + baseUrl + '. Is it running?';
+          setStatus('Connection failed — make sure Ollama is running locally.', 'error');
+          return;
+        }
+
+        if (!response.ok) {
+          history.pop();
+          const errText = await response.text().catch(function () { return response.statusText; });
+          assistantBubble.textContent = '⚠️ Ollama error ' + response.status + ': ' + errText;
+          setStatus('Ollama returned an error.', 'error');
+          return;
+        }
+
+        setStatus('Streaming from Ollama…');
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let accumulated = '';
+
+        try {
+          while (true) {
+            const { done, value: chunkData } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(chunkData, { stream: true });
+            const lines = chunk.split('\n');
+            let streamDone = false;
+
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (!trimmed) continue;
+              let parsed;
+              try { parsed = JSON.parse(trimmed); } catch (_) { continue; }
+
+              if (parsed.message && parsed.message.content) {
+                accumulated += parsed.message.content;
+                assistantBubble.textContent = accumulated;
+                window_.scrollTop = window_.scrollHeight;
+              }
+
+              if (parsed.done) { streamDone = true; break; }
+            }
+
+            if (streamDone) break;
+          }
+        } catch (streamErr) {
+          if (!accumulated) {
+            assistantBubble.textContent = '⚠️ Stream interrupted.';
+            setStatus('Stream interrupted.', 'error');
+            return;
+          }
+        }
+
+        history.push({ role: 'assistant', content: accumulated });
+        setStatus('✓ Response from Ollama (' + model + ')', 'ok');
+      }
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const rawText = input.value.trim();
+        if (!rawText) return;
+
+        if (!containsMention(rawText)) {
+          // Allow sending without a mention too — always goes to Ollama
+        }
+
+        const cleanText = stripMentions(rawText) || rawText;
+
+        input.value = '';
+        input.style.height = 'auto';
+        sendBtn.disabled = true;
+
+        addMessage('user', rawText);
+        setStatus('');
+
+        try {
+          await sendToOllama(cleanText);
+        } finally {
+          sendBtn.disabled = false;
+          input.focus();
+        }
+      });
+
+      // Allow Shift+Enter for newlines, Enter to submit
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          form.dispatchEvent(new Event('submit'));
+        }
+      });
+
+      // Welcome message
+      addMessage('assistant', 'Hi! I\'m connected to your local Ollama server. Use @ollama, @copilot, @lucidia, or @blackboxprogramming — all requests go directly to your hardware. No external services.');
+    })();
+  </script>
 
 </body>
 </html>
